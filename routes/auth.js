@@ -3,20 +3,20 @@ const router = express.Router();
 const checkUserExist = require("../controller/userController/checkUserExist");
 const createUser = require("../controller/userController/addNewUser");
 const passport = require("passport");
-flash = require('connect-flash');
+flash = require("connect-flash");
 
 router.post("/signup", async (req, res) => {
   try {
-    const { username, password, name } = req.body;
+    const { id, username, password, name } = req.body;
     const user = await checkUserExist(username, password);
     if (!user) {
-      await createUser(username, password, name);
-      res.status(200).json({
+      await createUser(id, username, password, name);
+      res.status(200).send({
         message: "User Created Successfully",
       });
     } else {
-      res.status(200).json({
-        message: "Usr already exist",
+      res.status(500).json({
+        message: "User already exist",
       });
     }
   } catch (err) {
@@ -24,14 +24,22 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/login",
-    failureFlash: true,
-  })
-);
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const userData = await checkUserExist(username, password);
+    if(userData){
+      res.status(200).send(userData)
+    }else{
+      res.status(404).json({
+        message:"User not found"
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+});
+
 
 // router.post("/logout", );
 

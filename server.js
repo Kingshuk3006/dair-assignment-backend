@@ -16,7 +16,11 @@ initializePassport(passport);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
-app.use(cors());
+app.use(cors(
+  {
+    origin:'*',
+  }
+));
 app.use(
   expressSession({ secret: "secret", resave: false, saveUninitialized: false })
 );

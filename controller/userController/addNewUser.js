@@ -1,8 +1,9 @@
 const userModel = require("../../Models/userSchema");
 
-const createUser = async (username, password, name) => {
+const createUser = async (id, username, password, name) => {
   try {
     userModel.create({
+      _id: id,
       username,
       password,
       name,

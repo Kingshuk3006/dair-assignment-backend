@@ -7,7 +7,7 @@ const checkUserExist = async(username, password)=>{
             if(password === user.password){
                 return user;
             }else{
-                console.error("Password mismatch")
+                console.log("Password mismatch")
                 return null
             }
         }
